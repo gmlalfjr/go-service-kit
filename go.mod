@@ -1,4 +1,4 @@
-module github.com/gmlalfjr/go-service-utils
+module github.com/gmlalfjr/go-service-kit
 
 go 1.22.1
 

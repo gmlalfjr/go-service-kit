@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/gmlalfjr/go-service-utils/logger"
-	"github.com/gmlalfjr/go-service-utils/service"
+	"github.com/gmlalfjr/go-service-kit/logger"
+	"github.com/gmlalfjr/go-service-kit/service"
 )
 
 // Application struct to manage app lifecycle
