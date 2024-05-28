@@ -1,47 +1,31 @@
-package app
+package fiber
 
 import (
-	"github.com/gmlalfjr/go-service-kit/logger"
-	"github.com/gmlalfjr/go-service-kit/service"
+	"github.com/gofiber/fiber/v2"
+	"log"
 )
 
-// Application struct to manage app lifecycle
-type Application struct {
-	logger     logger.LoggerConfig
-	appService *service.AppService
+// FiberService is a service for managing Fiber app
+type FiberService struct {
+	app *fiber.App
 }
 
-// NewApplication creates a new Application instance
-func NewApplication(logger logger.LoggerConfig, services ...service.Service) *Application {
-	appService := service.NewAppService(services...)
-	return &Application{
-		logger:     logger,
-		appService: appService,
+// NewFiberService creates a new FiberService instance
+func NewFiberService() *FiberService {
+	return &FiberService{
+		app: fiber.New(),
 	}
 }
 
-// Start starts the application
-func (a *Application) Start() error {
-	a.logger.Info("Starting application...")
-
-	// Start all registered services
-	if err := a.appService.Start(); err != nil {
-		a.logger.Error("Failed to start application:", err)
-		return err
-	}
-
-	return nil
+// Start starts the Fiber service
+func (s *FiberService) Start() error {
+	port := ":3000"
+	log.Printf("[Fiber] Starting Fiber service on port %s...", port)
+	return s.app.Listen(port)
 }
 
-// Stop stops the application
-func (a *Application) Stop() error {
-	a.logger.Info("Stopping application...")
-
-	// Stop all registered services
-	if err := a.appService.Stop(); err != nil {
-		a.logger.Error("Failed to stop application:", err)
-		return err
-	}
-
-	return nil
+// Stop stops the Fiber service
+func (s *FiberService) Stop() error {
+	log.Println("[Fiber] Stopping Fiber service...")
+	return s.app.Shutdown()
 }
