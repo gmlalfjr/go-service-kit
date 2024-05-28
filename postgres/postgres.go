@@ -1,18 +1,18 @@
 package postgres
 
 import (
-	"database/sql"
 	"fmt"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"log"
 )
 
 type PostgreService struct {
-	DB *sql.DB
+	DB *sqlx.DB
 }
 
-func NewPostgreService(connStr string) *PostgreService {
-	db, err := sql.Open("postgres", connStr)
+func NewPostgresService(connStr string) *PostgreService {
+	db, err := sqlx.Connect("postgres", connStr)
 	if err != nil {
 		log.Fatalf("Failed to connect to PostgreSQL: %v", err)
 	}
