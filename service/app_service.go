@@ -7,25 +7,21 @@ import (
 	"syscall"
 )
 
-// Service adalah interface yang harus dipenuhi oleh semua layanan
 type Service interface {
 	Start() error
 	Stop() error
 }
 
-// AppService is a service for managing multiple services
 type AppService struct {
-	services []Service // Slice untuk menyimpan berbagai layanan
+	services []Service
 }
 
-// NewAppService creates a new AppService instance with variadic services
 func NewAppService(services ...Service) *AppService {
 	return &AppService{
 		services: services,
 	}
 }
 
-// Start starts all registered services in AppService
 func (s *AppService) Start() error {
 	errChan := make(chan error, len(s.services))
 	for _, service := range s.services {

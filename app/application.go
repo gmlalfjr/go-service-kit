@@ -7,7 +7,7 @@ import (
 
 // Application struct to manage app lifecycle
 type Application struct {
-	logger     logger.Logger
+	logger     logger.LoggerConfig
 	appService *service.AppService
 }
 
@@ -22,7 +22,7 @@ func NewApplication(logger logger.Logger, services ...service.Service) *Applicat
 
 // Start starts the application
 func (a *Application) Start() error {
-	a.logger.Info("Starting application...")
+	a.logger.Print("Starting application...")
 
 	// Start all registered services
 	if err := a.appService.Start(); err != nil {
