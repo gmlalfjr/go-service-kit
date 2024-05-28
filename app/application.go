@@ -12,7 +12,7 @@ type Application struct {
 }
 
 // NewApplication creates a new Application instance
-func NewApplication(logger logger.Logger, services ...service.Service) *Application {
+func NewApplication(logger logger.LoggerConfig, services ...service.Service) *Application {
 	appService := service.NewAppService(services...)
 	return &Application{
 		logger:     logger,
@@ -22,7 +22,7 @@ func NewApplication(logger logger.Logger, services ...service.Service) *Applicat
 
 // Start starts the application
 func (a *Application) Start() error {
-	a.logger.Print("Starting application...")
+	a.logger.Info("Starting application...")
 
 	// Start all registered services
 	if err := a.appService.Start(); err != nil {
