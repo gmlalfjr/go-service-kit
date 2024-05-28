@@ -1,6 +1,7 @@
 package fiber
 
 import (
+	"github.com/gmlalfjr/go-service-kit/env"
 	"github.com/gofiber/fiber/v2"
 	"log"
 )
@@ -19,7 +20,7 @@ func NewFiberService() *FiberService {
 
 // Start starts the Fiber service
 func (s *FiberService) Start() error {
-	port := ":3000"
+	port := env.GetString("PORT", ":8080")
 	log.Printf("[Fiber] Starting Fiber service on port %s...", port)
 	return s.app.Listen(port)
 }
