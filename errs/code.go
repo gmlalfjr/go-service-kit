@@ -35,7 +35,7 @@ func (ce CodeErr) Error() string {
 }
 
 func (ce CodeErr) Errors() error {
-	return NewError(errors.New(strings.ToLower(ce.Message())), ce.StatusCode(), ce.Code(), ce.Message())
+	return NewError(errors.New(strings.ToLower(ce.Message())), ce.StatusCode(), ce.Message())
 }
 
 func (ce CodeErr) Code() int {
