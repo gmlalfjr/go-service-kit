@@ -20,7 +20,7 @@ var mapCodeSuccessStatusCode = map[CodeSuccess]int{
 
 var mapCodeSuccessMessage = map[CodeSuccess]string{
 	SUCCESS_GET:     successMessage,
-	SUCCESS_CREATED: "Berhasil dibuat",
+	SUCCESS_CREATED: "Created",
 }
 
 func (cs CodeSuccess) StatusCode() int {

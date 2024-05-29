@@ -13,7 +13,6 @@ import (
 
 type response struct {
 	statusCode       int                `json:"-"`
-	Code             int                `json:"code"`
 	Message          string             `json:"message"`
 	Data             interface{}        `json:"data"`
 	ErrorValidations []errorValidations `json:"error_validations,omitempty"`
@@ -49,7 +48,6 @@ func (r *response) JSON(c *fiber.Ctx) error {
 func Error(ctx context.Context, err error) Response {
 	var resp = &response{
 		statusCode: http.StatusInternalServerError,
-		Code:       errs.SOMETHING_WENT_WRONG.Code(),
 		Message:    errs.SomethingWentWrong,
 	}
 
@@ -58,19 +56,16 @@ func Error(ctx context.Context, err error) Response {
 		case errs.CodeErr:
 			resp = &response{
 				statusCode: er.StatusCode(),
-				Code:       er.Code(),
 				Message:    er.Message(),
 			}
 		case *errs.Error:
 			resp = &response{
 				statusCode: er.StatusCode(),
-				Code:       er.SystemCode(),
 				Message:    er.Message(),
 			}
 		case validator.ValidationErrors:
 			resp = &response{
 				statusCode:       errs.VALIDATION_ERROR.StatusCode(),
-				Code:             errs.VALIDATION_ERROR.Code(),
 				Message:          errs.VALIDATION_ERROR.Message(),
 				ErrorValidations: make([]errorValidations, 0),
 			}
@@ -105,5 +100,5 @@ func Success(ctx context.Context, statusCode int, data interface{}) Response {
 		successCode = SUCCESS_GET
 	}
 
-	return &response{statusCode: statusCode, Code: successCode.Code(), Message: successCode.Message(), Data: data}
+	return &response{statusCode: statusCode, Message: successCode.Message(), Data: data}
 }

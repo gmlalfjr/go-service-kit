@@ -5,21 +5,18 @@ type Error struct {
 	err        error
 	message    string
 	statusCode int
-	systemCode int
 }
 
 // NewError returns a new strandard error
-func NewError(err error, statusCode, systemCode int, message string, moreInfos ...string) error {
+func NewError(err error, statusCode int, message string, moreInfos ...string) error {
 	return &Error{
 		err:        err,
 		statusCode: statusCode,
-		systemCode: systemCode,
 		message:    message,
 	}
 }
 
-// NewErrorWithCodeErr returns a new error with CodeErr type
-func NewErrorWithCodeErr(err error, codeErr CodeErr, moreInfos ...string) error {
+func NewErrsWithCode(err error, codeErr CodeErr, moreInfos ...string) error {
 	return &Error{
 		err:        err,
 		statusCode: codeErr.StatusCode(),
@@ -43,10 +40,6 @@ func (e *Error) Error() string {
 
 func (e *Error) Message() string {
 	return e.message
-}
-
-func (e *Error) SystemCode() int {
-	return e.systemCode
 }
 
 func (e *Error) StatusCode() int {
