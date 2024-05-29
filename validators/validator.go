@@ -20,7 +20,7 @@ func BindAndValidate(ctx *fiber.Ctx, req interface{}) error {
 
 	// Validate struct
 	if err := validate.Struct(req); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		return err
 	}
 
 	return nil
