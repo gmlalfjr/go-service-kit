@@ -43,7 +43,7 @@ func LoggingMiddleware(c *fiber.Ctx) error {
 	// Call next handler
 	err := c.Next()
 
-	// Capture logs and errors
+	// Capture logs and errs
 	elapsed := time.Since(start)
 	logData := LogData{
 		TraceID:   span.SpanContext().TraceID().String(),
