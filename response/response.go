@@ -6,10 +6,9 @@ import (
 	"github.com/gmlalfjr/go-service-kit/env"
 	"github.com/gmlalfjr/go-service-kit/errs"
 	"github.com/gmlalfjr/go-service-kit/transform"
-	"net/http"
-
-	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/gofiber/fiber/v2"
+	"net/http"
 )
 
 type response struct {
@@ -27,10 +26,10 @@ type errorValidations struct {
 }
 
 type Response interface {
-	JSON(c *gin.Context)
+	JSON(c *fiber.Ctx) error
 }
 
-func (r *response) JSON(c *gin.Context) {
+func (r *response) JSON(c *fiber.Ctx) error {
 	// NOTES: trash way to set http response body
 	body, _ := transform.InterfaceToString(r)
 	// check response
@@ -38,13 +37,12 @@ func (r *response) JSON(c *gin.Context) {
 		body = "success request"
 	}
 
-	c.Set("HTTP_RESPONSE_BODY", body)
+	c.Locals("HTTP_RESPONSE_BODY", body)
 	if r.statusCode >= http.StatusBadRequest {
-		c.AbortWithStatusJSON(r.statusCode, r)
-		return
+		return c.Status(r.statusCode).JSON(r)
 	}
 
-	c.JSON(r.statusCode, r)
+	return c.Status(r.statusCode).JSON(r)
 }
 
 // Error returns an error response with the given status code and error message
@@ -95,7 +93,7 @@ func Error(ctx context.Context, err error) Response {
 	return resp
 }
 
-// Success returns an success response
+// Success returns a success response
 func Success(ctx context.Context, statusCode int, data interface{}) Response {
 	var successCode CodeSuccess
 	switch statusCode {
