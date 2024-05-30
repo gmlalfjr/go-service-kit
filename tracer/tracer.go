@@ -96,3 +96,7 @@ func (s *Span) SetError(err error) {
 	s.span.SetStatus(codes.Error, err.Error())
 	s.span.SetAttributes(attribute.String("error.message", err.Error()))
 }
+
+func (s *Span) End() {
+	s.span.End()
+}
