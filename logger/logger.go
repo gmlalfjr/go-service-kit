@@ -149,14 +149,14 @@ func (lc *LoggerConfig) Infof(ctx context.Context, format string, args ...interf
 	}).Info(message)
 }
 
-func (l *LoggerConfig) Info(args ...interface{}) {
-	l.Logger.Info(args...)
+func (lc *LoggerConfig) Info(args ...interface{}) {
+	lc.Logger.Info(args...)
 }
 
-func (l *LoggerConfig) Error(args ...interface{}) {
-	l.Logger.Error(args...)
+func (lc *LoggerConfig) Error(args ...interface{}) {
+	lc.Logger.Error(args...)
 }
 
-func (l *LoggerConfig) Fatal(args ...interface{}) {
-	l.Logger.Fatal(args...)
+func (lc *LoggerConfig) Fatal(args ...interface{}) {
+	lc.Logger.Fatal(args...)
 }

@@ -68,13 +68,6 @@ func (tc *TracingConfig) Middleware() fiber.Handler {
 	}
 }
 
-// StartTraceFromContext starts a new trace from the given context and returns the context and span.
-func StartTraceFromContext(ctx context.Context, spanName string) (context.Context, trace.Span) {
-	tracer := otel.Tracer("")
-	ctx, span := tracer.Start(ctx, spanName)
-	return ctx, span
-}
-
 // Lebih bersih: hanya menggunakan ctx untuk mengekstrak dan menetapkan span.
 func (tc *TracingConfig) SetError(ctx context.Context, err error) {
 	span := trace.SpanFromContext(ctx)
@@ -82,4 +75,24 @@ func (tc *TracingConfig) SetError(ctx context.Context, err error) {
 		span.SetStatus(codes.Error, err.Error())
 		span.RecordError(err)
 	}
+}
+
+type Span struct {
+	span trace.Span
+}
+
+// StartTraceFromContext starts a new trace from the given context and returns the context and span.
+func StartTraceFromContext(ctx context.Context, spanName string) (context.Context, *Span) {
+	tracer := otel.Tracer("")
+	ctx, span := tracer.Start(ctx, spanName)
+	return ctx, &Span{span}
+}
+
+func (s *Span) SetError(err error) {
+	if s.span == nil || err == nil {
+		return
+	}
+	s.span.RecordError(err, trace.WithStackTrace(true))
+	s.span.SetStatus(codes.Error, err.Error())
+	s.span.SetAttributes(attribute.String("error.message", err.Error()))
 }
